@@ -1,0 +1,16 @@
+{
+  "name": "shesecure-web-selenium-tests",
+  "version": "1.0.0",
+  "description": "Selenium Web end-to-end testing suite for SheSecure",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/**/*.test.js --timeout 15000"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.18.1"
+  },
+  "devDependencies": {
+    "mocha": "^10.3.0",
+    "chai": "^4.4.1"
+  }
+}
