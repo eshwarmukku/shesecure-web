@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SheSecure - AI Powered Women's Safety & Emergency Protection</title>
+  <meta name="description" content="SheSecure is an AI-powered personal safety platform offering emergency SOS triggers, voice distress detection, safe route navigation, and automated contact notifications.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #101828;
+      --card-bg: #1D2939;
+      --accent-purple: #7F56D9;
+      --accent-purple-hover: #6941C6;
+      --danger-red: #EF4444;
+      --danger-red-hover: #DC2626;
+      --success-green: #10B981;
+      --warning-amber: #F59E0B;
+      --text-main: #FFFFFF;
+      --text-muted: #94A3B8;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(29, 41, 57, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand i {
+      color: var(--accent-purple);
+      font-size: 26px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-main);
+    }
+
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .btn-github:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success-green);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #A5B4FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 36px;
+    }
+
+    /* SOS Button */
+    .sos-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 50px;
+    }
+
+    .btn-sos {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #EF4444 0%, #B91C1C 100%);
+      color: white;
+      border: none;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+      animation: pulse-red 2s infinite;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-sos:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes pulse-red {
+      0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 25px rgba(239, 68, 68, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+
+    .sos-caption {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(127, 86, 217, 0.4);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .risk-badge {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--success-green);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .action-item {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 16px;
+      border-radius: 14px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .action-item:hover {
+      background: rgba(127, 86, 217, 0.15);
+      border-color: var(--accent-purple);
+    }
+
+    .action-item i {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .action-item.blue i { color: #3B82F6; }
+    .action-item.purple i { color: #A855F7; }
+    .action-item.orange i { color: #F97316; }
+    .action-item.teal i { color: #14B8A6; }
+
+    .action-item span {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Voice Monitoring Section */
+    .voice-box {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .mic-icon-wrapper {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success-green);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      margin: 0 auto 16px;
+      transition: all 0.3s ease;
+    }
+
+    .mic-icon-wrapper.active {
+      background: rgba(249, 115, 22, 0.2);
+      color: var(--warning-amber);
+      animation: pulse-orange 1.5s infinite;
+    }
+
+    .mic-icon-wrapper.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger-red);
+      animation: pulse-red 1s infinite;
+    }
+
+    .btn-toggle-voice {
+      background: var(--accent-purple);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s ease;
+    }
+
+    .btn-toggle-voice:hover {
+      background: var(--accent-purple-hover);
+    }
+
+    .distress-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger-red);
+    }
+
+    /* Contacts Form */
+    .contact-list {
+      list-style: none;
+      margin-top: 14px;
+    }
+
+    .contact-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .contact-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .btn-delete-contact {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .btn-delete-contact:hover {
+      color: var(--danger-red);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 440px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-icon {
+      font-size: 48px;
+      color: var(--danger-red);
+      margin-bottom: 16px;
+    }
+
+    .modal h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .modal p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .btn-modal-alert {
+      background: var(--danger-red);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Reports & Repos Section */
+    .reports-banner {
+      background: linear-gradient(135deg, rgba(127, 86, 217, 0.2) 0%, rgba(29, 41, 57, 0.8) 100%);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(127, 86, 217, 0.3);
+      margin-top: 40px;
+    }
+
+    .reports-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .reports-title h2 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .reports-title p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .repo-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .repo-card {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+    }
+
+    .repo-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .repo-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .repo-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .repo-link-btn {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      transition: background 0.2s;
+    }
+
+    .repo-link-btn:hover {
+      background: var(--accent-purple);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 60px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="#" class="brand">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>SheSecure</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#dashboard" class="active">Dashboard</a></li>
+      <li><a href="#voice">Voice Detection</a></li>
+      <li><a href="#contacts">Contacts</a></li>
+      <li><a href="#reports">Test Reports</a></li>
+    </ul>
+    <a href="https://github.com/eshwarmukku/shesecure-web" target="_blank" class="btn-github">
+      <i class="fa-brands fa-github"></i>
+      <span>GitHub Repo</span>
+    </a>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>AI Safety Guard Active</span>
+      </div>
+      <h1>Women's Emergency & Distress Protection</h1>
+      <p>Instant SOS alerts, real-time voice phrase detection, safe route navigation, and automated emergency contact dispatch.</p>
+
+      <!-- SOS Button -->
+      <div class="sos-container">
+        <button id="sos-btn" class="btn-sos" onclick="triggerSOS()">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px;"></i>
+          <span>SOS</span>
+        </button>
+        <div class="sos-caption">Click to broadcast instant emergency alert</div>
+      </div>
+    </section>
+
+    <!-- Dashboard Grid -->
+    <section id="dashboard" class="dashboard-grid">
+      
+      <!-- Current Risk Level -->
+      <div class="card">
+        <div class="card-title">
+          <span>Current Risk Level</span>
+          <i class="fa-solid fa-shield-cat" style="color: var(--success-green);"></i>
+        </div>
+        <div class="risk-badge">
+          <span>Low</span>
+          <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
+          Environment, time, and location vectors indicate safe parameters.
+        </p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-title">
+          <span>Quick Actions</span>
+        </div>
+        <div class="quick-actions">
+          <div class="action-item blue" onclick="alert('Safe Route Navigation: Calculating well-lit, highly populated routes.')">
+            <i class="fa-solid fa-route"></i>
+            <span>Safe Route</span>
+          </div>
+          <div class="action-item purple" onclick="alert('Nearby Safe Places: Police Stations, 24/7 Hospitals, Women Shelters highlighted.')">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Safe Places</span>
+          </div>
+          <div class="action-item orange" onclick="document.getElementById('voice').scrollIntoView({behavior: 'smooth'})">
+            <i class="fa-solid fa-microphone-lines"></i>
+            <span>Voice Detection</span>
+          </div>
+          <div class="action-item teal" onclick="document.getElementById('contacts').scrollIntoView({behavior: 'smooth'})">
+            <i class="fa-solid fa-address-book"></i>
+            <span>Contacts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Insight -->
+      <div class="card">
+        <div class="card-title">
+          <span>AI Safety Insight</span>
+          <i class="fa-solid fa-brain" style="color: var(--accent-purple);"></i>
+        </div>
+        <p style="font-size: 14px; margin-bottom: 10px;">No suspicious activity detected in your proximity.</p>
+        <p style="font-size: 12px; color: var(--text-muted);">
+          Continuous acoustic analysis & movement pattern evaluation active.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- Voice Monitoring Section -->
+    <section id="voice" class="card" style="margin-bottom: 40px;">
+      <div class="card-title">
+        <span>Voice Distress Keyword Monitoring</span>
+        <i class="fa-solid fa-waveform-lines" style="color: var(--warning-amber);"></i>
+      </div>
+      <div class="voice-box">
+        <div id="mic-icon" class="mic-icon-wrapper">
+          <i id="mic-fa" class="fa-solid fa-microphone-slash"></i>
+        </div>
+        <h3 id="voice-status-title">Monitoring Idle</h3>
+        <p id="voice-status-sub" style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">
+          Click start monitoring to listen for distress phrases.
+        </p>
+
+        <button id="voice-toggle-btn" class="btn-toggle-voice" onclick="toggleVoiceMonitoring()">Start Voice Monitoring</button>
+
+        <div style="margin-top: 24px;">
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Simulate Voice Trigger (Click any distress keyword):</div>
+          <div class="distress-chips">
+            <span class="chip" onclick="simulateVoiceKeyword('Help me')">"Help me"</span>
+            <span class="chip" onclick="simulateVoiceKeyword('Bachao')">"Bachao"</span>
+            <span class="chip" onclick="simulateVoiceKeyword('Emergency')">"Emergency"</span>
+            <span class="chip" onclick="simulateVoiceKeyword('Police')">"Police"</span>
+            <span class="chip" onclick="simulateVoiceKeyword('Save me')">"Save me"</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Emergency Contacts Section -->
+    <section id="contacts" class="card" style="margin-bottom: 40px;">
+      <div class="card-title">
+        <span>Emergency Contacts</span>
+        <i class="fa-solid fa-users" style="color: #3B82F6;"></i>
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+        <input type="text" id="contact-name" placeholder="Contact Name" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: white;">
+        <input type="text" id="contact-phone" placeholder="Phone Number" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: white;">
+        <button onclick="addContact()" style="background: var(--accent-purple); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">Add</button>
+      </div>
+
+      <ul id="contact-list" class="contact-list">
+        <li class="contact-card">
+          <div class="contact-info">
+            <h4>Father (Primary)</h4>
+            <p>+91 98765 43210</p>
+          </div>
+          <button class="btn-delete-contact" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+        </li>
+        <li class="contact-card">
+          <div class="contact-info">
+            <h4>Police Helpline</h4>
+            <p>100</p>
+          </div>
+          <button class="btn-delete-contact" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Reports Banner & GitHub Actions Link -->
+    <section id="reports" class="reports-banner">
+      <div class="reports-header">
+        <div class="reports-title">
+          <h2>900 Comprehensive Test Cases & GitHub Actions Workflows</h2>
+          <p>300 Test Cases per Repository across Web, App, and Backend testing platforms.</p>
+        </div>
+      </div>
+
+      <div class="repo-links-grid">
+        
+        <!-- Web Repo -->
+        <div class="repo-card">
+          <h3><i class="fa-solid fa-globe" style="color: #3B82F6;"></i> Web Repository</h3>
+          <p>Selenium WebDriver tests, 300 Web test cases spreadsheet, and GitHub Actions CI.</p>
+          <div class="repo-links">
+            <a href="https://github.com/eshwarmukku/shesecure-web" target="_blank" class="repo-link-btn">Repo</a>
+            <a href="https://github.com/eshwarmukku/shesecure-web/blob/main/TEST_CASES.md" target="_blank" class="repo-link-btn">300 Cases Table</a>
+            <a href="https://github.com/eshwarmukku/shesecure-web/actions" target="_blank" class="repo-link-btn">Actions</a>
+          </div>
+        </div>
+
+        <!-- App Repo -->
+        <div class="repo-card">
+          <h3><i class="fa-solid fa-mobile-screen-button" style="color: #10B981;"></i> App Repository</h3>
+          <p>Appium WebdriverIO tests, Flutter Android source code, 300 App test cases, and CI.</p>
+          <div class="repo-links">
+            <a href="https://github.com/eshwarmukku/shesecure-app" target="_blank" class="repo-link-btn">Repo</a>
+            <a href="https://github.com/eshwarmukku/shesecure-app/blob/main/TEST_CASES.md" target="_blank" class="repo-link-btn">300 Cases Table</a>
+            <a href="https://github.com/eshwarmukku/shesecure-app/actions" target="_blank" class="repo-link-btn">Actions</a>
+          </div>
+        </div>
+
+        <!-- Backend Repo -->
+        <div class="repo-card">
+          <h3><i class="fa-solid fa-server" style="color: #A855F7;"></i> Backend Repository</h3>
+          <p>Express API Mock, Supertest endpoints, 100-user Load Stress test, 300 cases, and CI.</p>
+          <div class="repo-links">
+            <a href="https://github.com/eshwarmukku/shesecure-backend" target="_blank" class="repo-link-btn">Repo</a>
+            <a href="https://github.com/eshwarmukku/shesecure-backend/blob/main/TEST_CASES.md" target="_blank" class="repo-link-btn">300 Cases Table</a>
+            <a href="https://github.com/eshwarmukku/shesecure-backend/actions" target="_blank" class="repo-link-btn">Actions</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Alert Modal -->
+  <div id="alert-modal" class="modal-overlay">
+    <div class="modal">
+      <i id="modal-icon" class="fa-solid fa-triangle-exclamation modal-icon"></i>
+      <h3 id="modal-title">Emergency SOS Triggered</h3>
+      <p id="modal-desc">Broadcasting live GPS coordinates to emergency contacts and nearby authorities.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-close" onclick="closeModal()">Dismiss</button>
+        <button class="btn-modal-alert" onclick="alert('Dispatching SMS alert to contacts!'); closeModal();">Notify Contacts</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 SheSecure Platform. Built with Flutter, Node.js, Selenium, Appium, and GitHub Actions.</p>
+  </footer>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    let isListening = false;
+
+    function triggerSOS() {
+      document.getElementById('modal-title').innerText = "Emergency SOS Triggered";
+      document.getElementById('modal-desc').innerText = "Live GPS coordinates broadcasted to emergency contacts and local dispatchers.";
+      document.getElementById('modal-icon').className = "fa-solid fa-triangle-exclamation modal-icon";
+      document.getElementById('alert-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('alert-modal').classList.remove('active');
+    }
+
+    function toggleVoiceMonitoring() {
+      isListening = !isListening;
+      const micWrapper = document.getElementById('mic-icon');
+      const micIcon = document.getElementById('mic-fa');
+      const btn = document.getElementById('voice-toggle-btn');
+      const title = document.getElementById('voice-status-title');
+      const sub = document.getElementById('voice-status-sub');
+
+      if (isListening) {
+        micWrapper.className = "mic-icon-wrapper active";
+        micIcon.className = "fa-solid fa-microphone";
+        btn.innerText = "Stop Voice Monitoring";
+        btn.style.background = "var(--danger-red)";
+        title.innerText = "Listening for Distress Phrases...";
+        sub.innerText = "Say 'Help', 'Bachao', or 'Police' to trigger an automated alert.";
+      } else {
+        micWrapper.className = "mic-icon-wrapper";
+        micIcon.className = "fa-solid fa-microphone-slash";
+        btn.innerText = "Start Voice Monitoring";
+        btn.style.background = "var(--accent-purple)";
+        title.innerText = "Monitoring Idle";
+        sub.innerText = "Click start monitoring to listen for distress phrases.";
+      }
+    }
+
+    function simulateVoiceKeyword(keyword) {
+      if (!isListening) toggleVoiceMonitoring();
+      
+      const micWrapper = document.getElementById('mic-icon');
+      micWrapper.className = "mic-icon-wrapper danger";
+      
+      document.getElementById('modal-title').innerText = `Danger Word Detected: "${keyword}"`;
+      document.getElementById('modal-desc').innerText = `Speech recognition engine detected threat keyword "${keyword}". Emergency SOS flow activated.`;
+      document.getElementById('modal-icon').className = "fa-solid fa-skull-crossbones modal-icon";
+      
+      setTimeout(() => {
+        document.getElementById('alert-modal').classList.add('active');
+      }, 500);
+    }
+
+    function addContact() {
+      const name = document.getElementById('contact-name').value;
+      const phone = document.getElementById('contact-phone').value;
+
+      if (!name || !phone) {
+        alert('Please enter both name and phone number.');
+        return;
+      }
+
+      const list = document.getElementById('contact-list');
+      const li = document.createElement('li');
+      li.className = 'contact-card';
+      li.innerHTML = `
+        <div class="contact-info">
+          <h4>${name}</h4>
+          <p>${phone}</p>
+        </div>
+        <button class="btn-delete-contact" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+      `;
+      list.appendChild(li);
+
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-phone').value = '';
+    }
+  </script>
+</body>
+</html>
