@@ -28,6 +28,11 @@ jobs:
       run: |
         node -c selenium-tests/tests/*.js
 
+    - name: Publish Tabular Test Cases Report to Actions Summary
+      run: |
+        echo "## 📊 SheSecure Web Platform - 300 Test Cases Report Table" >> $GITHUB_STEP_SUMMARY
+        cat TEST_CASES.md >> $GITHUB_STEP_SUMMARY
+
     - name: Archive Test Reports
       uses: actions/upload-artifact@v4
       with:
