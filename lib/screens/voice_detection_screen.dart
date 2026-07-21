@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+import '../utils/speech_helper.dart';
 
 class VoiceDetectionScreen extends StatefulWidget {
   const VoiceDetectionScreen({super.key});
@@ -11,7 +11,7 @@ class VoiceDetectionScreen extends StatefulWidget {
 }
 
 class _VoiceDetectionScreenState extends State<VoiceDetectionScreen> {
-  final stt.SpeechToText _speech = stt.SpeechToText();
+  final SpeechHelper _speech = SpeechHelper();
 
   bool _isListening = false;
   bool _speechAvailable = false;
@@ -39,15 +39,17 @@ class _VoiceDetectionScreenState extends State<VoiceDetectionScreen> {
   }
 
   Future<void> _initSpeech() async {
-    final permission = await Permission.microphone.request();
-
-    if (!permission.isGranted) {
+    // On web we provide a no-op stub, so mark speech as unavailable
+    if (kIsWeb) {
+      if (!mounted) return;
       setState(() {
-        _status = "Microphone permission denied.";
+        _speechAvailable = false;
+        _status = "Speech recognition not available on web.";
       });
       return;
     }
 
+    // For non-web platforms use the helper (which wraps permission + speech)
     final available = await _speech.initialize(
       onStatus: (status) {
         if (!mounted) return;
@@ -61,7 +63,8 @@ class _VoiceDetectionScreenState extends State<VoiceDetectionScreen> {
       onError: (errorNotification) {
         if (!mounted) return;
         setState(() {
-          _status = "Speech error: ${errorNotification.errorMsg}";
+          // errorNotification may be package-specific; stringify generically
+          _status = "Speech error: ${errorNotification?.toString() ?? 'unknown'}";
           _isListening = false;
         });
       },
@@ -86,27 +89,29 @@ class _VoiceDetectionScreenState extends State<VoiceDetectionScreen> {
       _status = "Listening for distress words...";
     });
 
-    await _speech.listen(
-      onResult: (result) {
-        final words = result.recognizedWords.toLowerCase();
+    await _speech.listen(onResult: (result) {
+      // Safely extract recognized words from the platform-specific result
+      String recognized = "";
+      try {
+        final dyn = result;
+        final rw = dyn.recognizedWords;
+        if (rw is String) recognized = rw.toLowerCase();
+      } catch (_) {
+        // ignore
+      }
 
-        if (!mounted) return;
-        setState(() {
-          _lastWords = result.recognizedWords;
-        });
+      if (!mounted) return;
+      setState(() {
+        _lastWords = recognized.isEmpty ? "" : recognized;
+      });
 
-        for (final keyword in distressKeywords) {
-          if (words.contains(keyword)) {
-            _triggerDangerAlert(keyword);
-            break;
-          }
+      for (final keyword in distressKeywords) {
+        if (recognized.contains(keyword)) {
+          _triggerDangerAlert(keyword);
+          break;
         }
-      },
-      listenMode: stt.ListenMode.confirmation,
-      partialResults: true,
-      listenFor: const Duration(seconds: 20),
-      pauseFor: const Duration(seconds: 3),
-    );
+      }
+    });
   }
 
   Future<void> _stopListening() async {
